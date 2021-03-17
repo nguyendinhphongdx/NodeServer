@@ -238,3 +238,6 @@ exports.Login = (req, res) => {
             
     })
 }
+exports.Test = (req, res) => {
+  res.status(200).json({message:'ok'})
+}
