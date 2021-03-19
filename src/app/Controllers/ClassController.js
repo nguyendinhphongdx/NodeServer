@@ -17,7 +17,11 @@ exports.addClass = (req, res, next) => {
             return 
         }
         const {name,_idSubject,_idProfessor,status,startDate,schedule1,schedule2} = req.body;
-        const subject = await SubjectModel.findById(_idSubject)
+        const findSubject = await SubjectModel.findById(_idSubject)
+        let subject = [];
+        if(findSubject){
+            subject = findSubject;
+        }
         const professor = _idProfessor;
         const __class = new ClassModel({name,subject,professor,status,startDate,schedule1,schedule2});
         __class.save()
@@ -214,7 +218,7 @@ exports.compareClass = (req, res)=>{
                     throw new Error('ClassModel not found')
                 }
             })
-            .catch(err => {throw new Error(err)})
+            .catch(err => {throw new Error(err.message)})
         }else{
             throw new Error('students not found')
         }
@@ -222,4 +226,10 @@ exports.compareClass = (req, res)=>{
     .catch(err => {
         responeInstance.error400(res, jsonInstance.jsonNoData(err.message));
     })
+}
+exports.getCommonSchedule =async(req , res)=>{
+    const classes = await ClassModel.find({});
+    const result = ClassService.getScheduleClass(classes)
+    responeInstance.success200(res, jsonInstance.toJsonWithArray('SUCCESS',result));
+
 }

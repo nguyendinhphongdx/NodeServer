@@ -1,3 +1,4 @@
+const { countMarkAvgStudent } = require("../helpers/functionExcept");
 const ProfessorModel = require("../Models/ProfessorModel");
 const StudentModel = require("../Models/StudentModel");
 const ArrayService = require("./ArrayService");
@@ -54,6 +55,20 @@ class ClassService{
             image:professor.image
         };
     }
+    getScheduleClass(classes){
+        const result = classes.map(item=>{
+            // Id: 1,
+            // Subject: 'Explosion of Betelgeuse Star',
+            // StartTime: new Date(2021, 1, 15, 5, 30),
+            // EndTime: new Date(2021, 1, 15, 7, 0)
+            return {
+                Id:item._id,
+                Subject: item.name,
+                St
+            }
+        })
+    }
+    
 }
 function getMarkClass(members,students,name){
     const membersInClass = members.map(idMember =>{
@@ -66,11 +81,10 @@ function getMarkClass(members,students,name){
         value:`${countMarkClas(membersInClass)}`
     }
    return dataMark;
-
 }
 function countMarkClas(membersInClass){
     var total =0;
-    membersInClass.forEach(member => total += Number(StudentService.avgMarkStudent(member).mark));
+    membersInClass.forEach(member => total += Number(countMarkAvgStudent(member).mark));
     return (Number(total)/membersInClass.length).toFixed(1);
 }
 

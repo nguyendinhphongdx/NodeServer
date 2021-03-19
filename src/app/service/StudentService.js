@@ -54,26 +54,25 @@ class StudentService{
             class:_class
         }
      }
-    avgMarkStudent(student){
-        var markClass =0;
-        if(student.mark.length==0){
-            return  {
-                name:student.name,
-                mark:0,
-            };
-        }else{
-            const subjects = student.mark;
-            subjects.forEach(subject=>{
-                markClass+=Number(MarkService.avgMark(subject));
-            })
-            markClass=Number(markClass/subjects.length).toFixed(2);
-        }
-        return {
-            name:student.name,
-            mark:markClass,
-        }
-       
-    }
+    // avgMarkStudent(student){
+    //     var markClass =0;
+    //     if(student.mark.length==0){
+    //         return  {
+    //             name:student.name,
+    //             mark:0,
+    //         };
+    //     }else{
+    //         const subjects = student.mark;
+    //         subjects.forEach(subject=>{
+    //             markClass+=Number(MarkService.avgMark(subject));
+    //         })
+    //         markClass=Number(markClass/subjects.length).toFixed(2);
+    //     }
+    //     return {
+    //         name:student.name,
+    //         mark:markClass,
+    //     }
+    // }
     async _mobile_GetAllClassByStudent(student){
         const allClasses = student.class || [];
         const detailAllClass = await ClassModel.find().where('_id').in(allClasses)
@@ -112,4 +111,5 @@ class StudentService{
         return {...student._doc,class:newClasses};
     }
 }
+
 module.exports = new StudentService();

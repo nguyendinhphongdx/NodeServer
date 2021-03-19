@@ -13,8 +13,16 @@ const ClassSchema = new mongoose.Schema({
         default:'actived'
     },
     startDate:{type: Number, default: Date.now().valueOf()},
-    schedule1:{type:String, required: true},
-    schedule2:{type:String, required: true},
+    schedule1:{type:{
+        day: {type :String},
+        startTime: {type: Number,default: Date.now().valueOf()},
+        endTime: {type: Number,default: Date.now().valueOf()}
+    }, required: true},
+    schedule2:{type:{
+        day: {type :String},
+        startTime: {type: Number,default: Date.now().valueOf()},
+        endTime: {type: Number,default: Date.now().valueOf()}
+    }, required: true},
 },{ timestamps:true });
 
 module.exports = mongoose.model('Class',ClassSchema);
