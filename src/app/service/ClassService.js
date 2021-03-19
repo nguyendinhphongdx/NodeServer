@@ -1,9 +1,7 @@
-const { countMarkAvgStudent } = require("../helpers/functionExcept");
+const { countMarkAvgStudent } = require("../helpers/exceptFunct");
+const {  getScheduleClass } = require("../helpers/exceptFunct");
 const ProfessorModel = require("../Models/ProfessorModel");
 const StudentModel = require("../Models/StudentModel");
-const ArrayService = require("./ArrayService");
-const MarkService = require("./MarkService");
-const StudentService = require("./StudentService");
 class ClassService{
     totalByClass(arrayClass){
         var dataChart =[];
@@ -55,21 +53,23 @@ class ClassService{
             image:professor.image
         };
     }
-    getScheduleClass(classes){
-        const result = classes.map(item=>{
-            // Id: 1,
-            // Subject: 'Explosion of Betelgeuse Star',
-            // StartTime: new Date(2021, 1, 15, 5, 30),
-            // EndTime: new Date(2021, 1, 15, 7, 0)
-            return {
-                Id:item._id,
-                Subject: item.name,
-                St
-            }
+    getScheduleClasses(classes){
+        const classHaveStudent = classes.filter(_class => _class.member.length>0);
+        var result = [];
+        classHaveStudent.forEach(_class=>{
+            result.push(...getScheduleClass(_class,result.length));
         })
+       return result
     }
-    
 }
+module.exports = new ClassService();
+
+
+
+
+
+
+
 function getMarkClass(members,students,name){
     const membersInClass = members.map(idMember =>{
         var student = students.find(item=>JSON.stringify(item._id)===JSON.stringify(idMember));
@@ -88,4 +88,3 @@ function countMarkClas(membersInClass){
     return (Number(total)/membersInClass.length).toFixed(1);
 }
 
-module.exports = new ClassService();

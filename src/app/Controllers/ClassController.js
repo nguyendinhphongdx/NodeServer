@@ -229,7 +229,24 @@ exports.compareClass = (req, res)=>{
 }
 exports.getCommonSchedule =async(req , res)=>{
     const classes = await ClassModel.find({});
-    const result = ClassService.getScheduleClass(classes)
+    const result = ClassService.getScheduleClasses(classes)
     responeInstance.success200(res, jsonInstance.toJsonWithArray('SUCCESS',result));
-
+}
+exports.getScheduleStudent =async(req , res)=>{
+    const {_id} = req.body;
+    try {
+        const student = await StudentModel.findById(_id);
+        if(!student){
+            throw new Error('Student not found')
+        }
+        const classes = await ClassModel.find().where('_id').in(student.class)
+        if(!classes){
+            throw new Error('Class not found')
+        }
+        const result = ClassService.getScheduleClasses(classes)
+        responeInstance.success200(res, jsonInstance.toJsonWithArray('SUCCESS',result));
+    } catch (error) {
+        responeInstance.error400(res, jsonInstance.jsonNoData(error.message));
+    }
+    
 }
