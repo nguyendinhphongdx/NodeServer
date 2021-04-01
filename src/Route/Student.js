@@ -25,6 +25,6 @@ router.post('/detail_student',requireLogin,detailStudent)
 router.post('/mark_student',requireLogin,markStudent)
 router.post('/get_all_class',requireLogin,getAllClass)
 router.get('/students',requireLogin,Students)
-router.post('/login',requireLogin,Login)
+router.post('/login',Login)
 router.get('/test',Test)
 module.exports = router;
