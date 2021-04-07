@@ -6,6 +6,7 @@ const StudentModel = require('../Models/StudentModel');
 const StudentService = require('../service/StudentService');
 const ClassModel = require('../Models/ClassModel');
 const ClassService = require('../service/ClassService');
+const MobileService = require('../service/MobileService');
 
 
 exports.Login = (req, res) => {
@@ -61,7 +62,7 @@ exports.getScheduleStudent =async(req , res)=>{
         if(!classes){
             throw new Error('Class not found')
         }
-        const result = ClassService.getScheduleClasses(classes)
+        const result = MobileService.converTimeString(ClassService.getScheduleClasses(classes))
         responeInstance.success200(res, jsonInstance.toJsonWithArray('SUCCESS',result));
     } catch (error) {
         responeInstance.error400(res, jsonInstance.jsonNoData(error.message));

@@ -36,8 +36,10 @@ exports.getScheduleClass=(_class,length)=>{
         result.push({
             Id:length,
             Subject:_class.name,
+            day:_class.schedule1.day,
             StartTime: new Date(year,month,item.date,hourStart1,minuteStart1),
             EndTime: new Date(year,month,item.date,hourEnd1,minuteEnd1),
+            title:_class.subject[0].name,
             type:1,
         })
         length++;
@@ -52,8 +54,10 @@ exports.getScheduleClass=(_class,length)=>{
         result.push({
             Id:length,
             Subject:_class.name,
+            day:_class.schedule2.day,
             StartTime: new Date(year,month,item.date,hourStart2,minuteStart2),
             EndTime: new Date(year,month,item.date,hourEnd2,minuteEnd2),
+            title:_class.subject[0].name,
             type:2,
         })
         length++;

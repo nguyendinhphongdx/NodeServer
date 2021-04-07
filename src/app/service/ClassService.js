@@ -67,9 +67,6 @@ module.exports = new ClassService();
 
 
 
-
-
-
 function getMarkClass(members,students,name){
     const membersInClass = members.map(idMember =>{
         var student = students.find(item=>JSON.stringify(item._id)===JSON.stringify(idMember));
