@@ -54,25 +54,25 @@ class StudentService{
             class:_class
         }
      }
-    // avgMarkStudent(student){
-    //     var markClass =0;
-    //     if(student.mark.length==0){
-    //         return  {
-    //             name:student.name,
-    //             mark:0,
-    //         };
-    //     }else{
-    //         const subjects = student.mark;
-    //         subjects.forEach(subject=>{
-    //             markClass+=Number(MarkService.avgMark(subject));
-    //         })
-    //         markClass=Number(markClass/subjects.length).toFixed(2);
-    //     }
-    //     return {
-    //         name:student.name,
-    //         mark:markClass,
-    //     }
-    // }
+    avgMarkStudent(student){
+        var markClass =0;
+        if(student.mark.length==0){
+            return  {
+                name:student.name,
+                mark:0,
+            };
+        }else{
+            const subjects = student.mark;
+            subjects.forEach(subject=>{
+                markClass+=Number(MarkService.avgMark(subject));
+            })
+            markClass=Number(markClass/subjects.length).toFixed(2);
+        }
+        return {
+            name:student.name,
+            mark:markClass,
+        }
+    }
     async _mobile_GetAllClassByStudent(student){
         const allClasses = student.class || [];
         const detailAllClass = await ClassModel.find().where('_id').in(allClasses)
@@ -87,6 +87,27 @@ class StudentService{
             return obj
         }))
         return newClasses;
+    }
+    async _mobile_GetAllSubjectByStudent(student){
+        const allClasses = student.class || [];
+        const marks = student.mark || [];
+        const detailAllClass = await ClassModel.find().where('_id').in(allClasses)
+       const subjectInClass = detailAllClass.map(item =>{
+           const idSubject = item.subject[0]._id || null;
+           console.log(item.name);
+           const searchIn = marks.find(mark =>{
+               return JSON.stringify(mark.subject._id) === JSON.stringify(idSubject)   
+           })
+           const newMark = searchIn?MarkService.avgMark(searchIn):0
+        return {
+            className:item.name,
+            name:item.subject[0].name,
+            _id:item._id,
+            mark: newMark,
+            price:item.subject[0].price
+        }  
+       })
+       return subjectInClass
     }
     async _mobile_GetDetailStudent(student){
         const allClasses = student.class || [];

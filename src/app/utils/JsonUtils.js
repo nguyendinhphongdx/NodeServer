@@ -40,5 +40,11 @@ jsonNoData = (message) => {
     data: null
   }
 }
-
-module.exports = { toJsonWithData, jsonNoData, toJsonWithArray };
+toJsonWithObject = (message, data) => {
+  return {
+    message: message,
+    totalResult: 1,
+    data: data
+  };
+}
+module.exports = { toJsonWithData, jsonNoData, toJsonWithArray, toJsonWithObject};

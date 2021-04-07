@@ -34,7 +34,7 @@ exports.requireLogin= (req, res, next) => {
         // verifies secret and checks exp
         jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
             if (err) {
-                return res.status(401).json({"error": true, "message": 'Unauthorized access.' });
+                return res.status(401).json({"error": true, "message": 'Unauthorized access.'});
             }
         req.decoded = decoded;
         next();

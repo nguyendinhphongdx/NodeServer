@@ -6,6 +6,7 @@ const RouteProfessor = require("./Professor");
 const RouteClass = require("./Class");
 const RouteDocument = require("./Document");
 const RouteHistory = require("./History");
+const RouteMobile = require("./Mobile");
 function Route(app){
     app.use('/login',RouteLogin);
     app.use('/user',RouteUser);
@@ -15,6 +16,7 @@ function Route(app){
     app.use('/class',RouteClass);
     app.use('/history',RouteHistory);
     app.use('/document',RouteDocument);
+    app.use('/mobile',RouteMobile);
     app.use('/',(req, res) =>{
         res.json({
             message:'Welcome to WebManager!'
