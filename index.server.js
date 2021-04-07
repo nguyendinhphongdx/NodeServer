@@ -52,11 +52,18 @@ io.on(`connection`,(socket) => {
     socket.on('notif', (data) => {
         const { message } = data;
         const {_class,des,start,end} = message;
-       console.log('class',_class)
-       console.log('dess',des)
-       console.log('start',start)
-       console.log('end',end)
+        console.log(_class,des,start,end);
+        io.sockets.emit('receive_data',{_class,des,start,end});
+        io.sockets.emit('chat','hello from server');
     });
+    socket.on('change_schedule', (data) => {
+        console.log(data);
+        io.sockets.emit('receive_data',data);
+    });
+    socket.on('from_mobile', (data) => {
+        console.log('data from mobile',data);
+    });
+    
 })
 server.listen(5050,()=>{
     console.log(`Socket is running localhost:5050`)

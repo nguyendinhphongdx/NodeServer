@@ -94,7 +94,6 @@ class StudentService{
         const detailAllClass = await ClassModel.find().where('_id').in(allClasses)
        const subjectInClass = detailAllClass.map(item =>{
            const idSubject = item.subject[0]._id || null;
-           console.log(item.name);
            const searchIn = marks.find(mark =>{
                return JSON.stringify(mark.subject._id) === JSON.stringify(idSubject)   
            })

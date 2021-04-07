@@ -62,8 +62,10 @@ exports.getScheduleStudent =async(req , res)=>{
         if(!classes){
             throw new Error('Class not found')
         }
-        const result = MobileService.converTimeString(ClassService.getScheduleClasses(classes))
-        responeInstance.success200(res, jsonInstance.toJsonWithArray('SUCCESS',result));
+    
+        const result = MobileService.sortByTime(ClassService.getScheduleClasses(classes))
+        const convertedRs = MobileService.converTimeString(result);
+        responeInstance.success200(res, jsonInstance.toJsonWithArray('SUCCESS',convertedRs));
     } catch (error) {
         responeInstance.error400(res, jsonInstance.jsonNoData(error.message));
     } 
