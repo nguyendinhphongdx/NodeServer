@@ -65,7 +65,7 @@ exports.getScheduleStudent =async(req , res)=>{
     
         const result = MobileService.sortByTime(ClassService.getScheduleClasses(classes))
         const convertedRs = MobileService.converTimeString(result);
-        responeInstance.success200(res, jsonInstance.toJsonWithArray('SUCCESS',convertedRs));
+        responeInstance.success200(res, jsonInstance.toJsonWithArray('SUCCESS',result));
     } catch (error) {
         responeInstance.error400(res, jsonInstance.jsonNoData(error.message));
     } 
