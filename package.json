@@ -4,7 +4,7 @@
   "description": "Back End For ReactJSDemo",
   "main": "index.server.js",
   "scripts": {
-    "start": "node index.server.js",
+    "start": "nodemon index.server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -20,6 +20,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.3",
     "morgan": "^1.10.0",
+    "node-sass": "^5.0.0",
     "nodemon": "^2.0.7",
     "socket.io": "^4.0.1"
   }
