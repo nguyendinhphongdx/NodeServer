@@ -63,7 +63,6 @@ io.on(`connection`,(socket) => {
     socket.on('from_mobile', (data) => {
         console.log('data from mobile',data);
     });
-    
 })
 server.listen(5050,()=>{
     console.log(`Socket is running localhost:5050`)
