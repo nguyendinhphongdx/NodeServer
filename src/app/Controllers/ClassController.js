@@ -77,8 +77,8 @@ exports.updateClass = async (req, res, next) => {
         }
         if(professor){
             newClass={...newClass,professor}
-            if(!ProfessorService.classIsExist(professor._id,_class._id)){
-                professor.class.push(_class._id);
+            if(!await ProfessorService.classIsExist(professor._id,_class._id)){
+                professor.class.push(_class);
                 await professor.save();
             }
         }
@@ -87,7 +87,7 @@ exports.updateClass = async (req, res, next) => {
             if(_class){
                 responeInstance.success200(
                     res,
-                    jsonInstance.toJsonWithData(`SUCCESS`, _class)
+                    jsonInstance.toJsonWithData(`Update Class Successfully`, _class)
                 );
             } else{
                 throw new Error('_class not found')

@@ -3,6 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const jsonInstance = require("../utils/JsonUtils");
 const responeInstance = require("../utils/ResponeUtils");
+const ClassModel = require('../Models/ClassModel');
+const ProfessorService = require('../service/ProfessorService');
+const { log } = require('console');
 const uploadProfessor =path.join('public/uploads/frofessor/');
 exports.addProfessor = (req, res, next) => {
     let avatar= null;
@@ -137,4 +140,30 @@ exports.changeAvatar = (req, res, next) => {
     .catch(err => {
         responeInstance.error400(res, jsonInstance.jsonNoData(err.message));
     })
+}
+exports.synchronousClass = async(req, res, next)=>{
+    const arrEmpty = [];
+    await ProfessorModel.find()
+    .then((professores)=>{
+        if(professores){
+            professores.forEach(async element => {
+                const profess = await ProfessorModel.findById(element._id);
+            if(element._id || profess){
+                const classes = await ProfessorService.getAllClassOfProfessor(element._id);
+                profess.class.splice(0, profess.class.length);
+                profess.class.push(...classes);
+                await profess.save();
+            }
+            });
+            responeInstance.success200(
+                res,
+                jsonInstance.toJsonWithData(`SUCCESS`, professores)
+                );
+        }
+    })
+    .catch(err => {
+        responeInstance.error400(res, jsonInstance.jsonNoData(err.message));
+    })
+   
+    
 }
