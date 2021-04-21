@@ -51,8 +51,11 @@ io.on(`connection`,(socket) => {
     socket.on('notif', (data) => {
         const { message } = data;
         const {_class,des,start,end} = message;
-        console.log(_class,des,start,end);
-        io.sockets.emit('receive_data',{_class,des,start,end});
+        var options = { hour12: false };
+        const convertStart = new Date(start).toLocaleString('en-US',options)
+        const convertEnd = new Date(end).toLocaleString('en-US',options)
+        console.log(_class,des,convertStart,convertEnd);
+        io.sockets.emit('receive_data',{_class,des,convertStart,convertEnd});
         io.sockets.emit('chat','hello from server');
     });
     socket.on('change_schedule', (data) => {

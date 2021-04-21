@@ -3,8 +3,9 @@ class MobileService{
        return  schedules.map(item=>{
            const start =new Date(item.StartTime);
            const end =new Date(item.EndTime);
-            const startTimeFormat =start.toLocaleDateString()+" - "+ start.toLocaleTimeString();
-            const endTimeFormat =end.toLocaleDateString()+" - "+ end.toLocaleTimeString();
+           var options = { hour12: false };
+            const startTimeFormat =start.toLocaleString('en-US',options);
+            const endTimeFormat =end.toLocaleDateString('en-US',options);
             return{
                 ...item,
                 StartTime: startTimeFormat,
