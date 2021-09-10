@@ -1,7 +1,7 @@
 const express = require('express');
 const { requireLogin } = require('../app/Controllers/AuthController');
 const { addClass, Classes, removeClass, updateClass, assignProfessor, addMember, compareClass, removeMember, getCommonSchedule } = require('../app/Controllers/ClassController');
-const { pushNotif } = require('../app/Controllers/Socket.io/NotificationController');
+const { pushNotif } = require('../app/Controllers/Socket.io/SocketController');
 
 const router = express.Router();
 

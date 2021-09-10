@@ -5,7 +5,7 @@ const HistoryModel = require("../Models/HistoryModel");
  * https://viblo.asia/p/tim-hieu-ve-http-status-code-lA7GKwx5GKZQ
  */
 error422 = (res, jsonMessage) => {
-  return res.status(422).json(jsonMessage)
+  return res.status(422).json({status:422,...jsonMessage})
 }
 
 error400 = (res, jsonMessage) => {
@@ -14,7 +14,7 @@ error400 = (res, jsonMessage) => {
   const _remoteAddress = request._remoteAddress;
   const path = request.originalUrl;
   HistoryService.pushHistory(user,jsonMessage.message,400,_remoteAddress,path)
-  return res.status(400).json(jsonMessage)
+  return res.status(400).json({status:400,...jsonMessage})
 }
 
 error404 = (res, jsonMessage) => {
@@ -23,7 +23,7 @@ error404 = (res, jsonMessage) => {
   const _remoteAddress = request._remoteAddress;
   const path = request.originalUrl;
   HistoryService.pushHistory(user,jsonMessage.message,404,_remoteAddress,path)
-  return res.status(404).json(jsonMessage)
+  return res.status(404).json({status:404,...jsonMessage})
 }
 
 error401 = (res, jsonMessage) => {
@@ -32,14 +32,14 @@ error401 = (res, jsonMessage) => {
   const _remoteAddress = request._remoteAddress;
   const path = request.originalUrl;
   HistoryService.pushHistory(user,jsonMessage.message,401,_remoteAddress,path)
-  return res.status(401).json(jsonMessage)
+  return res.status(401).json({status:401,...jsonMessage})
 }
 
 error500 = (res) => {
   return res.status(500).json({
     message: "url error",
     totalResult: 0,
-    data: null
+    data: null,status:500
   })
 }
 
@@ -50,8 +50,8 @@ success200 = (res, jsonMessage) => {
   const user = request.decoded?request.decoded.user.user_name:'login';
   const _remoteAddress = request._remoteAddress;
   const path = request.originalUrl;
-  HistoryService.pushHistory(user,jsonMessage.message,200,_remoteAddress,path)
-  return res.status(200).json(jsonMessage);
+  //HistoryService.pushHistory(user,jsonMessage.message,200,_remoteAddress,path)
+  return res.status(200).json({status:200,...jsonMessage});
 }
 
 module.exports = { error422, error400, error401, error500, success200 }

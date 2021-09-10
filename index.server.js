@@ -10,7 +10,7 @@ const { connect } = require('./src/app/config/database/connect');
 const fileUpload = require('express-fileupload');
 const http = require('http')
 const socketIO = require('socket.io')
-
+const SocketConnection = require('./src/app/config/socket.io');
 app.use(morgan('combined'));
 
 // default options
@@ -37,36 +37,9 @@ let io = socketIO(server,{
         origin: '*',
       }
 })
-io.on(`connection`,(socket) => {
-    console.log(`A new user just ${socket.id}` );
-    socket.on('disconnect',()=>{
-        console.log(`${socket.id} disconnected`);
-    })
-    socket.on('disconnect', () =>
-    console.log(`Disconnected: ${socket.id}`));
-    socket.on('join', (room) => {
-        console.log(`Socket ${socket.id} joining ${room}`);
-        socket.join(room);
-    });
-    socket.on('notif', (data) => {
-        const { message } = data;
-        const {_class,des,start,end} = message;
-        var options = { hour12: false };
-        const convertStart = new Date(start).toLocaleString('en-US',options)
-        const convertEnd = new Date(end).toLocaleString('en-US',options)
-        console.log(_class,des,convertStart,convertEnd);
-        io.sockets.emit('receive_data',{_class,des,convertStart,convertEnd});
-        io.sockets.emit('chat','hello from server');
-    });
-    socket.on('change_schedule', (data) => {
-        console.log(data);
-        io.sockets.emit('receive_data',data);
-    });
-    socket.on('from_mobile', (data) => {
-        console.log('data from mobile',data);
-    });
-    
-})
+SocketConnection.connect(io);
+
+
 server.listen(5050,()=>{
     console.log(`Socket is running localhost:5050`)
 })
