@@ -2,7 +2,6 @@ const MarkService = require("../service/MarkService");
 const { getDaysInMonth, getDaysInString } = require("./middleFunct");
 
 exports.countMarkAvgStudent=(student)=>{
-    console.log('in  Count Student');
     var markClass =0;
     if(student.mark.length==0){
         return  {

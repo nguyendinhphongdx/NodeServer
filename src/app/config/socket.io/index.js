@@ -1,3 +1,5 @@
+const Logger = require("../../utils/Logger");
+
 class SocketConnection {
     constructor(){
         this.users = [];
@@ -13,7 +15,7 @@ class SocketConnection {
         });
         
         io.on(`connection`,(socket) => {
-            console.log(`A new user just ${socket.id} -` ,socket.userId);
+            Logger.info(`A new user just ${socket.id} -` ,socket.userId)
             this.users =  this.users.filter(item => item.userId != socket.userId);
             this.users.push({
                 userId:socket.userId,
@@ -21,9 +23,9 @@ class SocketConnection {
             })
             socket.on('disconnect',()=>{
                 console.log(`${socket.id} disconnected`);
+                this.users =  this.users.filter(item => item.socketId != socket.id);
             })
-            socket.on('disconnect', () =>
-            console.log(`Disconnected: ${socket.id}`));
+           
             socket.on('join', (room) => {
                 console.log(`Socket ${socket.id} joining ${room}`);
                 socket.join(room);

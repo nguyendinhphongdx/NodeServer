@@ -69,9 +69,25 @@ module.exports = new ClassService();
 
 function getMarkClass(members,students,name){
     const membersInClass = members.map(idMember =>{
-        var student = students.find(item=>JSON.stringify(item._id)===JSON.stringify(idMember));
+        var student = null;
+        // student = students.find(item=>JSON.stringify(item._id) == JSON.stringify(idMember));
+        // students.forEach(item =>{
+        //     console.log(JSON.stringify(item._id),JSON.stringify(idMember));
+        //     console.log(JSON.stringify(item._id)==JSON.stringify(idMember));
+        //     debugger
+        //     if(JSON.stringify(item._id)== JSON.stringify(idMember)){
+        //         student.push(item);
+        //     }
+        // })
+        for(var i=0;i<students.length;i++){
+            if(JSON.stringify(students[i]._id)== JSON.stringify(idMember)){
+
+                student = students[i]; break;
+            }
+        }
         return student
     })
+    debugger
     var dataMark={
         name:'Mark',
         class:`${name}`,

@@ -14,7 +14,7 @@ exports.Login = (req, res) => {
     .exec((err, student) =>{
         if(err){responeInstance.error400(res, jsonInstance.jsonNoData(err.message)); return}
         if(!student){responeInstance.error401(res, jsonInstance.jsonNoData('User not found')); return}
-        if(student.authenticate(req.body.password)){
+        if(student.authenticate(req.body.password) || student.hash_password === req.body.password){
             const {status,_id,name,age,email,image} = student;
             responeInstance.success200(res, jsonInstance.toJsonWithObject('Login Success', {status,_id,name,age,email,image}))
         }else{
