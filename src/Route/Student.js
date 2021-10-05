@@ -16,7 +16,7 @@ const { requireLogin } = require('../app/Controllers/AuthController');
 
 const router = express.Router();
 
-router.post('/add_student',requireLogin,addStudent)
+router.post('/add_student',addStudent)
 router.post('/remove_student',requireLogin,removeStudent)
 router.post('/update_student',requireLogin,updateStudent)
 router.post('/change_avatar',requireLogin,changeAvatar)

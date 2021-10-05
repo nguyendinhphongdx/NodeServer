@@ -12,41 +12,51 @@ exports.addStudent = (req, res, next) => {
     let avatarStudent = null;
     let uploadPath;
     let image='';
-    if (req.files !== null) {
-        avatarStudent = req.files.file; // name of file
-        image = new Date().getTime()+path.extname(avatarStudent.name);
-        uploadPath = uploadStudent + image;
+    try {
+        if (req.files !== null) {
+            avatarStudent = req.files.file; // name of file
+            image = new Date().getTime()+path.extname(avatarStudent.name);
+            uploadPath = uploadStudent + image;
+        }
+        console.log( req.body);
+        if(req.body.email){
+            Student.findOne({email: req.body.email})
+            .exec(async (err, student) => {
+                if(student){ 
+                    responeInstance.error400(res, jsonInstance.jsonNoData('Student already exists'));
+                    return 
+                }
+                // Use the mv() method to place the file somewhere on your server
+                let {name,password,age,email,status,description} = req.body;
+                age = Number(age);
+                const __student = new Student({name,password,age,email,status,description,image});
+                console.log(__student);
+                try {
+                    if(avatarStudent){
+                        await  avatarStudent.mv(uploadPath)
+                    }
+                    __student.save()
+                    .then((student) =>{
+                        responeInstance.success200(res, jsonInstance.toJsonWithData('SUCCESS',student ));
+                        return 
+                    })
+                    .catch((error) =>{
+                        console.log('error addStudent',error.message);
+                        responeInstance.error400(res, jsonInstance.jsonNoData(error.message));
+                    })
+                  
+                } catch (error) {
+                    throw new Error(error.message);
+                }
+            })
+        }else{
+            throw new Error("email not provider");
+        }
+    } catch (error) {
+        console.log(error.message);
+        responeInstance.error400(res, jsonInstance.jsonNoData(error.message));
     }
-    console.log( req.body);
-    Student.findOne({email: req.body.email})
-    .exec(async (err, student) => {
-        if(student){ 
-            responeInstance.error400(res, jsonInstance.jsonNoData('Student already exists'));
-            return 
-        }
-        // Use the mv() method to place the file somewhere on your server
-        let {name,password,age,email,status,description} = req.body;
-        age = Number(age);
-        const __student = new Student({name,password,age,email,status,description,image});
-        console.log(__student);
-        try {
-            if(avatarStudent){
-                await  avatarStudent.mv(uploadPath)
-            }
-            __student.save()
-            .then((student) =>{
-                responeInstance.success200(res, jsonInstance.toJsonWithData('SUCCESS',student ));
-                return 
-            })
-            .catch((error) =>{
-                console.log('error addStudent',error.message);
-                responeInstance.error400(res, jsonInstance.jsonNoData(error.message));
-            })
-          
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    })
+   
 }
 exports.Students = (req, res) =>{
     Student.find({})
