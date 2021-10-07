@@ -9,11 +9,11 @@ error422 = (res, jsonMessage) => {
 }
 
 error400 = (res, jsonMessage) => {
-  const request = res.req;
-  const user = request.decoded?request.decoded.user.user_name:'login';
-  const _remoteAddress = request._remoteAddress;
-  const path = request.originalUrl;
-  HistoryService.pushHistory(user,jsonMessage.message,400,_remoteAddress,path)
+  // const request = res.req;
+  // const user = request.decoded?request.decoded.user.user_name:'login';
+  // const _remoteAddress = request._remoteAddress;
+  // const path = request.originalUrl;
+  // HistoryService.pushHistory(user,jsonMessage.message,400,_remoteAddress,path)
   return res.status(400).json({status:400,...jsonMessage})
 }
 
@@ -46,10 +46,10 @@ error500 = (res) => {
 success200 = (res, jsonMessage) => {
   console.log(">>> success 200");
   //res.req.decoded.user.user_name  res.req.method   _remoteAddress   _parsedOriginalUrl.pathname
-  const request = res.req;
-  const user = request.decoded?request.decoded.user.user_name:'login';
-  const _remoteAddress = request._remoteAddress;
-  const path = request.originalUrl;
+  // const request = res.req;
+  // const user = request.decoded?request.decoded.user.user_name:'login';
+  // const _remoteAddress = request._remoteAddress;
+  // const path = request.originalUrl;
   //HistoryService.pushHistory(user,jsonMessage.message,200,_remoteAddress,path)
   return res.status(200).json({status:200,...jsonMessage});
 }

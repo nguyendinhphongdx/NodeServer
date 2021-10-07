@@ -30,7 +30,7 @@ class SocketConnection {
                 console.log(`Socket ${socket.id} joining ${room}`);
                 socket.join(room);
             });
-            socket.on('notif', (data) => {
+            socket.on('change_schedule', (data) => {
                 const { message } = data;
                 const {_class,des,start,end} = message;
                 var options = { hour12: false };
@@ -40,9 +40,16 @@ class SocketConnection {
                 io.sockets.emit('receive_data',{_class,des,convertStart,convertEnd});
                 io.sockets.emit('chat','hello from server');
             });
-            socket.on('change_schedule', (data) => {
-                console.log(data);
-                io.sockets.emit('receive_data',data);
+            socket.on('send-message', (data) => {
+                const {message} = data;
+                const messageWrite =message.message;
+                const request = {};
+                request.body = messageWrite;
+                const findDesSocketId = this.users.find(item => item.userId == messageWrite.message.userReceiveId);
+                if(findDesSocketId){
+                    console.log(messageWrite);
+                    io.to(findDesSocketId.socketId).emit('receive-message',messageWrite)
+                }
             });
             socket.on('from_mobile', (data) => {
                 console.log('data from mobile',data);
