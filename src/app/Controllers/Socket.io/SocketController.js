@@ -1,6 +1,11 @@
+const socketIo = require("../../config/socket.io");
 const ClassModel = require("../../Models/ClassModel");
 const jsonInstance = require("../../utils/JsonUtils");
 const responeInstance = require("../../utils/ResponeUtils");
-exports.pushNotif =(_class,start,end,message)=>{
-    ClassModel
+class SocketController{
+    
+    sendMessage(){
+        const SocketInstance = socketIo.socket;
+    }
 }
+module.exports = new SocketController();

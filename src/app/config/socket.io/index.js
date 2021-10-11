@@ -3,6 +3,7 @@ const Logger = require("../../utils/Logger");
 class SocketConnection {
     constructor(){
         this.users = [];
+        this.socket = null;
     }
     connect(io){
         io.use((socket, next) => {
@@ -15,6 +16,7 @@ class SocketConnection {
         });
         
         io.on(`connection`,(socket) => {
+            this.socket = socket;
             Logger.info(`A new user just ${socket.id} -` ,socket.userId)
             this.users =  this.users.filter(item => item.userId != socket.userId);
             this.users.push({
@@ -40,16 +42,20 @@ class SocketConnection {
                 io.sockets.emit('receive_data',{_class,des,convertStart,convertEnd});
                 io.sockets.emit('chat','hello from server');
             });
-            socket.on('send-message', (data) => {
-                const {message} = data;
-                const messageWrite =message.message;
-                const request = {};
-                request.body = messageWrite;
-                const findDesSocketId = this.users.find(item => item.userId == messageWrite.message.userReceiveId);
-                if(findDesSocketId){
-                    console.log(messageWrite);
-                    io.to(findDesSocketId.socketId).emit('receive-message',messageWrite)
-                }
+            socket.on('send-message', (message) => {
+               try {
+                    console.log(message);
+                    const messageWrite = message;
+                    const findDesSocketId = this.users.find(item => item.userId == messageWrite.message.userReceiveId);
+                    if(findDesSocketId){
+                        console.log("User is online");
+                        io.to(findDesSocketId.socketId).emit('receive-message',messageWrite)
+                    }else{
+                        console.log("User is offline");
+                    }
+               } catch (error) {
+                    console.log(error.message);
+               }
             });
             socket.on('from_mobile', (data) => {
                 console.log('data from mobile',data);

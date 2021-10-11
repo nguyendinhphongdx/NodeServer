@@ -5,7 +5,7 @@ const responeInstance = require("../utils/ResponeUtils");
 class ChatController{
     async writeMessage(req,res,next){
        try {
-            const {users,message}= req.body;
+            var {users,message}= req.body;
             if(users){
                 var _chat = await ChatModel.findOne({users:{$all:users}});
                 if(!_chat){
@@ -29,6 +29,9 @@ class ChatController{
         }
     }
     async queryMessage(req,res,next){
+        const limit = req.body.limit || 20;
+        const offset = req.body.offset || 0;
+        const sort = req.query.sort || true;
             try {
                 const {users} = req.body;
                 console.log(users);
@@ -37,7 +40,8 @@ class ChatController{
                     if(!_chat){
                         responeInstance.success200(res, jsonInstance.toJsonWithData('SUCCESS',[] ));
                     }else{
-                        responeInstance.success200(res, jsonInstance.toJsonWithData('SUCCESS',_chat.messages ));
+                        const result = sort=='true'?_chat.messages.reverse():_chat.messages;
+                        responeInstance.success200(res, jsonInstance.toJsonWithData('SUCCESS',result));
                     }
                 }
             } catch (error) {

@@ -18,6 +18,7 @@ exports.Login = (req, res) => {
             const {status,_id,name,age,email,image} = student;
             responeInstance.success200(res, jsonInstance.toJsonWithObject('Login Success', {status,_id,name,age,email,image}))
         }else{
+            console.log('Authenticate Failed',req.body);
             responeInstance.error401(res, jsonInstance.jsonNoData('Authenticate Failed')); return
         }        
     })
