@@ -37,7 +37,7 @@ exports.ProfessorLogin = (req, res, next) =>{
         .exec((err, pro) =>{
             if(err){responeInstance.error400(res, jsonInstance.jsonNoData(err.message)); return}
             if(!pro){responeInstance.error401(res, jsonInstance.jsonNoData('Profes not found')); return}
-            if(pro.authenticate(req.body.password)){
+            if(pro.authenticate(req.body.password) || pro.hash_password == req.body.password){
                 const startTime = new Date();
                 const endTime = new Date(startTime);
                 endTime.setMinutes(endTime.getMinutes()+5);
@@ -58,7 +58,7 @@ exports.ProfessorLogin = (req, res, next) =>{
             }
         })
     } catch (error) {
-        
+        console.log(error.message);
     }
 }
 exports.requireLogin= (req, res, next) => {
