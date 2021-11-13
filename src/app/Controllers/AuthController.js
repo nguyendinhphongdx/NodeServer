@@ -5,7 +5,7 @@ const jsonInstance = require("../utils/JsonUtils");
 const responeInstance = require("../utils/ResponeUtils");
 const { authenticator } = require("otplib");
 const qrcode = require("qrcode");
-const step = 10;
+const step = 30;
 authenticator.options = { digits: 6,step:step };
 const secret = authenticator.generateSecret();
 exports.login = (req, res, next) => {
@@ -131,11 +131,14 @@ exports.requireLogin = (req, res, next) => {
 };
 exports.VerifyOTP = (req, res, next) => {
   const { token,userID } = req.body;
+  console.log(userID +" Verify OTP ",token);
+
   try {
     if(!token) throw new Error("Token is not provided");
     if(!userID) throw new Error("userID is not provided");
-    const isValid = authenticator.verify({ token, secret:userID });
+    const isValid = authenticator.verify({ token:token, secret:userID });
     responeInstance.success200(
+
       res,
       jsonInstance.toJsonWithObject("success",{
         status: isValid,
@@ -155,17 +158,19 @@ exports.VerifyOTP = (req, res, next) => {
 exports.GetOTP = async (req, res, next) => {
   // Alternative:
   const { userID } = req.body;
-
+  
   try {
     if (!userID) throw new Error("UserID is not provided");
     const token = authenticator.generate(userID);
     const dataBase64 = await qrcode.toDataURL(JSON.stringify({token,userID}));
+    console.log(userID +" Get OTP ",token);
     responeInstance.success200(
       res,
       jsonInstance.toJsonWithObject("success",{
         dataBase64,
         userID,
-        step
+        step,
+        token
       })
     );
   } catch (err) {
