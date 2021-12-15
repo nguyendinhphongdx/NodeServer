@@ -5,8 +5,7 @@ const jsonInstance = require("../utils/JsonUtils");
 const responeInstance = require("../utils/ResponeUtils");
 const { authenticator } = require("otplib");
 const qrcode = require("qrcode");
-const step = 30;
-authenticator.options = { digits: 6,step:step };
+
 const secret = authenticator.generateSecret();
 exports.login = (req, res, next) => {
   try {
@@ -161,6 +160,8 @@ exports.GetOTP = async (req, res, next) => {
   
   try {
     if (!userID) throw new Error("UserID is not provided");
+    const step = 30;
+    authenticator.options = { digits: 6,step };
     const token = authenticator.generate(userID);
     const dataBase64 = await qrcode.toDataURL(JSON.stringify({token,userID}));
     console.log(userID +" Get OTP ",token);
